@@ -111,12 +111,18 @@ func runBuild(mode bind.BuildMode, cfg *BuildCfg) error {
 	defer os.Chdir(cwd)
 
 	os.Remove(cfg.Name + ".c") // may fail, we don't care
-
+        cmd0=exec.Command("goimports")
+	cmd0out,err2=cmd.Run()
+	fmt.Println(cmd0out,err2)
+	
 	fmt.Printf("goimports -w %v\n", cfg.Name+".go")
 	cmd := exec.Command("goimports", "-w", cfg.Name+".go")
 	cmdout, err = cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("cmd had error: %v  output:\no%v\n", err, string(cmdout))
+		cmd3 := exec.Command("goimports", "-w", cfg.Name+".go")
+	        cmdout3, err3 = cmd.Run()
+		fmt.Println("try",cmdout3,err3)
 		return err
 	}
 
